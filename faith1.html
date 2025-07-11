@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessible Learning Path - Faith's Music Journey</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #9B59B6, #3498DB, #E74C3C, #F39C12);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #9B59B6, #3498DB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        .accessibility-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #27AE60, #2ECC71);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        .path-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            position: relative;
+        }
+
+        .path-step {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 6px solid #9B59B6;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .path-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-number {
+            background: linear-gradient(45deg, #9B59B6, #8E44AD);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.5em;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-number::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .step-number:hover::before {
+            left: 100%;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-size: 1.4em;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .step-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .step-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .feature-tag {
+            background: linear-gradient(45deg, #9B59B6, #3498DB);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .accessibility-tag {
+            background: linear-gradient(45deg, #27AE60, #2ECC71);
+        }
+
+        .music-discovery {
+            background: #fff3e0;
+            border-left-color: #FF9800;
+        }
+
+        .music-discovery .step-number {
+            background: linear-gradient(45deg, #FF9800, #F57C00);
+        }
+
+        .guided-creation {
+            background: #e8f5e8;
+            border-left-color: #4CAF50;
+        }
+
+        .guided-creation .step-number {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+        }
+
+        .system-response {
+            background: #e3f2fd;
+            border-left-color: #2196F3;
+        }
+
+        .system-response .step-number {
+            background: linear-gradient(45deg, #2196F3, #1976D2);
+        }
+
+        .emotional-outcome {
+            background: #f3e5f5;
+            border-left-color: #E91E63;
+        }
+
+        .emotional-outcome .step-number {
+            background: linear-gradient(45deg, #E91E63, #C2185B);
+        }
+
+        .visual-element {
+            width: 80px;
+            height: 80px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .visual-element:hover {
+            transform: rotate(5deg) scale(1.1);
+        }
+
+        .visual-element::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .visual-element:hover::before {
+            transform: translateX(100%);
+        }
+
+        .connecting-line {
+            width: 4px;
+            height: 40px;
+            background: linear-gradient(to bottom, #9B59B6, #3498DB);
+            margin: 0 auto;
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .connecting-line::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 12px;
+            background: white;
+            border: 3px solid #9B59B6;
+            border-radius: 50%;
+        }
+
+        .accessibility-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .accessibility-card {
+            background: linear-gradient(45deg, #27AE60, #2ECC71);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .accessibility-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .accessibility-card h4 {
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .accessibility-card p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .interactive-workspace {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .workspace-feature {
+            flex: 1;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .workspace-feature:hover {
+            transform: translateY(-3px);
+        }
+
+        .music-tools {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .music-tool {
+            background: linear-gradient(45deg, #FF9800, #F57C00);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .music-tool:hover {
+            transform: translateY(-3px) scale(1.05);
+        }
+
+        .creation-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .creation-feature {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .creation-feature:hover {
+            transform: translateY(-3px) scale(1.05);
+        }
+
+        .badge-showcase {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .skill-badge {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #333;
+            padding: 8px 15px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-badge::before {
+            content: '⭐';
+            position: absolute;
+            left: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2em;
+            animation: sparkle 2s infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { left: -30px; opacity: 0; }
+            50% { left: 5px; opacity: 1; }
+        }
+
+        .empowerment-indicators {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+            align-items: center;
+        }
+
+        .empowerment-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            transition: transform 0.3s ease;
+        }
+
+        .empowerment-icon:hover {
+            transform: scale(1.2);
+        }
+
+        .empowerment-confident {
+            background: linear-gradient(45deg, #27AE60, #2ECC71);
+            color: white;
+        }
+
+        .empowerment-creative {
+            background: linear-gradient(45deg, #F39C12, #E67E22);
+            color: white;
+        }
+
+        .empowerment-accomplished {
+            background: linear-gradient(45deg, #E74C3C, #C0392B);
+            color: white;
+        }
+
+        .interactive-element {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-element:hover {
+            transform: scale(1.02);
+        }
+
+        .portfolio-preview {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 15px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .portfolio-preview h4 {
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .context-banner {
+            background: linear-gradient(45deg, #9B59B6, #8E44AD);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(155, 89, 182, 0.3);
+        }
+
+        .context-banner h3 {
+            margin-bottom: 10px;
+            font-size: 1.4em;
+        }
+
+        .context-banner p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .path-step {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .step-features {
+                justify-content: center;
+            }
+            
+            .accessibility-features, .music-tools, .creation-features {
+                grid-template-columns: 1fr;
+            }
+            
+            .interactive-workspace {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Accessible Learning Path</h1>
+            <p>Faith's Inclusive Music Production Journey</p>
+            <div class="accessibility-badge">♿ Accessibility-First Music Platform</div>
+        </div>
+
+        <div class="context-banner">
+            <h3>🎵 Context & Motivation</h3>
+            <p>Friday at 4:30 PM - Faith wants to try a basic music composition exercise using digital tools. She's nervous but curious about exploring music production tools inclusively.</p>
+        </div>
+
+        <div class="path-container">
+            <!-- Step 1: Login -->
+            <div class="path-step interactive-element" onclick="highlightStep(this)">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-title">Accessible Platform Entry</div>
+                    <div class="step-description">
+                        Faith logs into the music production platform designed with full accessibility support, accommodating her nervousness with calming interface options and reassuring guidance.
+                    </div>
+                    <div class="step-features">
+                        <div class="feature-tag accessibility-tag">Audio Navigation</div>
+                        <div class="feature-tag accessibility-tag">Keyboard Shortcuts</div>
+                        <div class="feature-tag accessibility-tag">Calming Interface</div>
+                        <div class="feature-tag accessibility-tag">Beginner-Friendly</div>
+                    </div>
+                </div>
+                <div class="visual-element">🎧</div>
+            </div>
+
+            <div class="connecting-line"></div>
+
+            <!-- Step 2: Tool Discovery -->
+            <div class="path-step music-discovery interactive-element" onclick="highlightStep(this)">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-title">Music Tool Discovery</div>
+                    <div class="step-description">
+                        Explores accessible music production tools with guided introduction to basic composition elements, building confidence through gentle exploration.
+                    </div>
+                    <div class="step-features">
+                        <div class="feature-tag">Guided Introduction</div>
+                        <div class="feature-tag">Tool Overview</div>
+                        <div class="feature-tag">Confidence Building</div>
+                        <div class="feature-tag">Interactive Demos</div>
+                    </div>
+                    <div class="music-tools">
+                        <div class="music-tool">
+                            <h4>🎹 Virtual Keyboard</h4>
+                            <p>Accessible piano interface with audio feedback</p>
+                        </div>
+                        <div class="music-tool">
+                            <h4>🥁 Drum Machine</h4>
+                            <p>Simple beat creation with tactile response</p>
+                        </div>
+                        <div class="music-tool">
+                            <h4>🎸 Sample Library</h4>
+                            <p>Curated sounds with clear categorization</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="visual-element">🎛️</div>
+            </div>
+
+            <div class="connecting-line"></div>
+
+            <!-- Step 3: Guided Creation -->
+            <div class="path-step guided-creation interactive-element" onclick="highlightStep(this)">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <div class="step-title">Hands-On Creative Session</div>
+                    <div class="step-description">
+                        Engages in a guided music composition exercise using accessible interfaces with real-time audio feedback, visual waveforms, and supportive coaching prompts.
+                    </div>
+                    <div class="step-features">
+                        <div class="feature-tag">Real-Time Feedback</div>
+                        <div class="feature-tag">Visual Waveforms</div>
+                        <div class="feature-tag">Supportive Coaching</div>
+                        <div class="feature-tag">Undo/Redo Safety</div>
+                    </div>
+                    <div class="creation-features">
+                        <div class="creation-feature">
+                            <h4>🎵 Step-by-Step Guide</h4>
+                            <p>Clear progression with audio cues</p>
+                        </div>
+                        <div class="creation-feature">
+                            <h4>🔊 Audio Descriptions</h4>
+                            <p>Detailed sound explanations</p>
+                        </div>
+                        <div class="creation-feature">
+                            <h4>⚡ Instant Playback</h4>
+                            <p>Immediate composition preview</p>
+                        </div>
+                        <div class="creation-feature">
+                            <h4>💾 Auto-Save</h4>
+                            <p>Progress automatically preserved</p>
+                        </div>
+                    </div>
+                    <div class="accessibility-features">
+                        <div class="accessibility-card">
+                            <h4>🎙️ Voice Commands</h4>
+                            <p>Hands-free composition control</p>
+                        </div>
+                        <div class="accessibility-card">
+                            <h4>📊 Visual Meters</h4>
+                            <p>High-contrast level indicators</p>
+                        </div>
+                        <div class="accessibility-card">
+                            <h4>🎯 Focus Mode</h4>
+                            <p>Distraction-free creative space</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="visual-element">🎼</div>
+            </div>
+
+            <div class="connecting-line"></div>
+
+            <!-- Step 4: System Response -->
+            <div class="path-step system-response interactive-element" onclick="highlightStep(this)">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <div class="step-title">Adaptive Learning Response</div>
+                    <div class="step-description">
+                        System recognizes Faith's progress, adapts to her comfort level, provides encouraging feedback, and offers personalized next steps based on her musical interests and accessibility needs.
+                    </div>
+                    <div class="step-features">
+                        <div class="feature-tag">Progress Recognition</div>
+                        <div class="feature-tag">Comfort Adaptation</div>
+                        <div class="feature-tag">Encouraging Feedback</div>
+                        <div class="feature-tag">Personalized Path</div>
+                    </div>
+                    <div class="badge-showcase">
+                        <div class="skill-badge">First Beat Created</div>
+                        <div class="skill-badge">Melody Explorer</div>
+                        <div class="skill-badge">Creative Confidence</div>
+                        <div class="skill-badge">Music Maker</div>
+                    </div>
+                    <div class="portfolio-preview">
+                        <h4>🎵 Your First Composition</h4>
+                        <p>"Friday Evening Experiment" - A unique musical piece that captures your creative journey</p>
+                    </div>
+                </div>
+                <div class="visual-element">🏆</div>
+            </div>
+
+            <div class="connecting-line"></div>
+
+            <!-- Step 5: Emotional Outcome -->
+            <div class="path-step emotional-outcome interactive-element" onclick="highlightStep(this)">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <div class="step-title">Creative Confidence & Joy</div>
+                    <div class="step-description">
+                        Faith feels accomplished and excited about her musical creation. Her initial nervousness transforms into confidence and curiosity. The accessible tools allowed her to focus on creativity rather than technical barriers.
+                    </div>
+                    <div class="step-features">
+                        <div class="feature-tag">Creative Accomplishment</div>
+                        <div class="feature-tag">Nervousness to Confidence</div>
+                        <div class="feature-tag">Barrier-Free Experience</div>
+                        <div class="feature-tag">Future Motivation</div>
+                    </div>
+                    <div class="empowerment-indicators">
+                        <div class="empowerment-icon empowerment-confident">😊</div>
+                        <span>Confident and joyful</span>
+                        <div class="empowerment-icon empowerment-creative">🎨</div>
+                        <span>Creatively empowered</span>
+                        <div class="empowerment-icon empowerment-accomplished">✨</div>
+                        <span>Proud of achievement</span>
+                    </div>
+                </div>
+                <div class="visual-element">🌟</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function highlightStep(element) {
+            // Remove previous highlights
+            document.querySelectorAll('.path-step').forEach(step => {
+                step.style.borderLeft = step.classList.contains('music-discovery') ? '6px solid #FF9800' : 
+                                       step.classList.contains('guided-creation') ? '6px solid #4CAF50' :
+                                       step.classList.contains('system-response') ? '6px solid #2196F3' : 
+                                       step.classList.contains('emotional-outcome') ? '6px solid #E91E63' : 
+                                       '6px solid #9B59B6';
+                step.style.transform = '';
+                step.style.boxShadow = '';
+            });
+
+            // Highlight clicked step
+            element.style.borderLeft = '6px solid #FF9800';
+            element.style.transform = 'translateX(10px)';
+            element.style.boxShadow = '0 15px 40px rgba(255, 152, 0, 0.3)';
+
+            // Add pulse animation to the step number
+            const stepNumber = element.querySelector('.step-number');
+            stepNumber.style.animation = 'pulse 0.6s ease-in-out';
+            
+            setTimeout(() => {
+                stepNumber.style.animation = '';
+            }, 600);
+        }
+
+        // Add pulse animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.1); }
+                100% { transform: scale(1); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Add interactive hover effects
+        document.querySelectorAll('.accessibility-card, .workspace-feature, .music-tool, .creation-feature').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px) scale(1.05)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(-3px)';
+            });
+        });
+
+        // Add sparkle animation to badges
+        document.querySelectorAll('.skill-badge').forEach(badge => {
+            badge.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05) rotate(2deg)';
+            });
+            badge.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+            });
+        });
+
+        // Add gentle pulse to context banner
+        const contextBanner = document.querySelector('.context-banner');
+        setInterval(() => {
+            contextBanner.style.boxShadow = '0 8px 25px rgba(155, 89, 182, 0.4)';
+            setTimeout(() => {
+                contextBanner.style.boxShadow = '0 6px 20px rgba(155, 89, 182, 0.3)';
+            }, 1000);
+        }, 3000);
+    </script>
+</body>
+</html>

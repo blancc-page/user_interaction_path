@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Interaction Path - Consistent Engagement</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #4CAF50, #2196F3, #FF9800, #E91E63);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        .path-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            position: relative;
+        }
+
+        .path-step {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 6px solid #4CAF50;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .path-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-number {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.5em;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-number::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .step-number:hover::before {
+            left: 100%;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-size: 1.4em;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .step-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .step-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .feature-tag {
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .system-response {
+            background: #e3f2fd;
+            border-left-color: #2196F3;
+        }
+
+        .emotional-outcome {
+            background: #f3e5f5;
+            border-left-color: #E91E63;
+        }
+
+        .visual-element {
+            width: 80px;
+            height: 80px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .visual-element:hover {
+            transform: rotate(5deg) scale(1.1);
+        }
+
+        .visual-element::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .visual-element:hover::before {
+            transform: translateX(100%);
+        }
+
+        .connecting-line {
+            width: 4px;
+            height: 40px;
+            background: linear-gradient(to bottom, #4CAF50, #2196F3);
+            margin: 0 auto;
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .connecting-line::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 12px;
+            background: white;
+            border: 3px solid #4CAF50;
+            border-radius: 50%;
+        }
+
+        .badge-showcase {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .badge {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #333;
+            padding: 8px 15px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .badge::before {
+            content: '⭐';
+            position: absolute;
+            left: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2em;
+            animation: sparkle 2s infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { left: -30px; opacity: 0; }
+            50% { left: 5px; opacity: 1; }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #2196F3);
+            border-radius: 4px;
+            animation: progress-fill 2s ease-in-out;
+        }
+
+        @keyframes progress-fill {
+            0% { width: 0%; }
+            100% { width: 85%; }
+        }
+
+        .interactive-element {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-element:hover {
+            transform: scale(1.02);
+        }
+
+        @media (max-width: 768px) {
+            .path-step {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .step-features {
+                justify-content: center;
+            }
+            
+            .badge-showcase {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>User Interaction Path I</h1>
+            <p>Consistent Engagement Journey</p>
+        </div>
+
+        <div class="path-container">
+            <!-- Step 1: Login -->
+            <div class="path-step interactive-element" onclick="highlightStep(this)">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-title">User Login</div>
+                    <div class="step-description">
+                        Jack logs into the app and navigates to his learning dashboard
+                    </div>
+                    <div class="step-features">
+                        <div class="feature-tag">Easy Access</div>
+                        <div class="feature-tag">Personalized Dashboard</div>
+                    </div>
+                </div>
+                <div class="visual-element">🔑</div>
+            </div>
+
+            <div class="connecting-line"></div>
+
+            <!-- Step 2: Module Selection -->
+            <div class="path-step interactive-element" onclick="highlightStep(this)">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-title">Module Selection</div>
+                    <div class="step-description">
+                        Selects "Calculus I" module from available courses
+                    </div>
+                    <div class="step-features">
+                        <div class="feature-tag">Course Catalog</div>
+                        <div class="feature-tag">Progress Tracking</div>
+                    </div>
+                </div>
+                <div class="visual-element">📚</div>
+            </div>
+
+            <div class="connecting-line"></div>
+
+            <!-- Step 3: Gamified Learning -->
+            <div class="path-step interactive-element" onclick="highlightStep(this)">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <div class="step-title">Gamified Quest Experience</div>
+                    <div class="step-description">
+                        Module appears as an interactive quest with challenges, badges, XP, and rewards. Includes mini-games, visual explainers, and spaced quizzes.
+                    </div>
+                    <div class="step-features">
+                        <div class="feature-tag">Mini-Games</div>
+                        <div class="feature-tag">Visual Explainers</div>
+                        <div class="feature-tag">Spaced Quizzes</div>
+                        <div class="feature-tag">XP System</div>
+                    </div>
+                    <div class="badge-showcase">
+                        <div class="badge">Level Up!</div>
+                        <div class="badge">Derivatives Master</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+                <div class="visual-element">🎮</div>
+            </div>
+
+            <div class="connecting-line"></div>
+
+            <!-- Step 4: System Response -->
+            <div class="path-step system-response interactive-element" onclick="highlightStep(this)">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <div class="step-title">System Response</div>
+                    <div class="step-description">
+                        System stores lesson progress, adapts next challenges based on prior results, awards weekly milestone badges, and sends streak reminders after 48 hours of inactivity.
+                    </div>
+                    <div class="step-features">
+                        <div class="feature-tag">Adaptive Learning</div>
+                        <div class="feature-tag">Progress Storage</div>
+                        <div class="feature-tag">Smart Reminders</div>
+                        <div class="feature-tag">Weekly Milestones</div>
+                    </div>
+                </div>
+                <div class="visual-element">⚙️</div>
+            </div>
+
+            <div class="connecting-line"></div>
+
+            <!-- Step 5: Emotional Outcome -->
+            <div class="path-step emotional-outcome interactive-element" onclick="highlightStep(this)">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <div class="step-title">Emotional Outcome</div>
+                    <div class="step-description">
+                        Jack feels proud, sees tangible learning progress, and is motivated to continue consistently, increasing his confidence toward GPA improvement.
+                    </div>
+                    <div class="step-features">
+                        <div class="feature-tag">Pride</div>
+                        <div class="feature-tag">Tangible Progress</div>
+                        <div class="feature-tag">Motivation</div>
+                        <div class="feature-tag">Confidence</div>
+                    </div>
+                </div>
+                <div class="visual-element">🎯</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function highlightStep(element) {
+            // Remove previous highlights
+            document.querySelectorAll('.path-step').forEach(step => {
+                step.style.borderLeft = step.classList.contains('system-response') ? '6px solid #2196F3' : 
+                                       step.classList.contains('emotional-outcome') ? '6px solid #E91E63' : 
+                                       '6px solid #4CAF50';
+                step.style.transform = '';
+                step.style.boxShadow = '';
+            });
+
+            // Highlight clicked step
+            element.style.borderLeft = '6px solid #FF9800';
+            element.style.transform = 'translateX(10px)';
+            element.style.boxShadow = '0 15px 40px rgba(255, 152, 0, 0.3)';
+
+            // Add pulse animation to the step number
+            const stepNumber = element.querySelector('.step-number');
+            stepNumber.style.animation = 'pulse 0.6s ease-in-out';
+            
+            setTimeout(() => {
+                stepNumber.style.animation = '';
+            }, 600);
+        }
+
+        // Add pulse animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.1); }
+                100% { transform: scale(1); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Add interactive hover effects
+        document.querySelectorAll('.badge').forEach(badge => {
+            badge.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05) rotate(2deg)';
+            });
+            badge.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+            });
+        });
+    </script>
+</body>
+</html>

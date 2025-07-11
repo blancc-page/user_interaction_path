@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessible Learning Path - Grace's Journey</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #9B59B6, #3498DB, #E74C3C, #F39C12);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #9B59B6, #3498DB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        .accessibility-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #27AE60, #2ECC71);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        .path-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            position: relative;
+        }
+
+        .path-step {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 6px solid #9B59B6;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .path-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-number {
+            background: linear-gradient(45deg, #9B59B6, #8E44AD);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.5em;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-number::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .step-number:hover::before {
+            left: 100%;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-size: 1.4em;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .step-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .step-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .feature-tag {
+            background: linear-gradient(45deg, #9B59B6, #3498DB);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .accessibility-tag {
+            background: linear-gradient(45deg, #27AE60, #2ECC71);
+        }
+
+        .module-selection {
+            background: #fff3e0;
+            border-left-color: #FF9800;
+        }
+
+        .module-selection .step-number {
+            background: linear-gradient(45deg, #FF9800, #F57C00);
+        }
+
+        .learning-experience {
+            background: #e8f5e8;
+            border-left-color: #4CAF50;
+        }
+
+        .learning-experience .step-number {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+        }
+
+        .system-response {
+            background: #e3f2fd;
+            border-left-color: #2196F3;
+        }
+
+        .system-response .step-number {
+            background: linear-gradient(45deg, #2196F3, #1976D2);
+        }
+
+        .emotional-outcome {
+            background: #f3e5f5;
+            border-left-color: #E91E63;
+        }
+
+        .emotional-outcome .step-number {
+            background: linear-gradient(45deg, #E91E63, #C2185B);
+        }
+
+        .visual-element {
+            width: 80px;
+            height: 80px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .visual-element:hover {
+            transform: rotate(5deg) scale(1.1);
+        }
+
+        .visual-element::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .visual-element:hover::before {
+            transform: translateX(100%);
+        }
+
+        .connecting-line {
+            width: 4px;
+            height: 40px;
+            background: linear-gradient(to bottom, #9B59B6, #3498DB);
+            margin: 0 auto;
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .connecting-line::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 12px;
+            background: white;
+            border: 3px solid #9B59B6;
+            border-radius: 50%;
+        }
+
+        .accessibility-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .accessibility-card {
+            background: linear-gradient(45deg, #27AE60, #2ECC71);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .accessibility-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .accessibility-card h4 {
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .accessibility-card p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .interactive-workspace {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .workspace-feature {
+            flex: 1;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .workspace-feature:hover {
+            transform: translateY(-3px);
+        }
+
+        .badge-showcase {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .skill-badge {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #333;
+            padding: 8px 15px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-badge::before {
+            content: '⭐';
+            position: absolute;
+            left: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2em;
+            animation: sparkle 2s infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { left: -30px; opacity: 0; }
+            50% { left: 5px; opacity: 1; }
+        }
+
+        .empowerment-indicators {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+            align-items: center;
+        }
+
+        .empowerment-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            transition: transform 0.3s ease;
+        }
+
+        .empowerment-icon:hover {
+            transform: scale(1.2);
+        }
+
+        .empowerment-seen {
+            background: linear-gradient(45deg, #27AE60, #2ECC71);
+            color: white;
+        }
+
+        .empowerment-motivated {
+            background: linear-gradient(45deg, #F39C12, #E67E22);
+            color: white;
+        }
+
+        .empowerment-confident {
+            background: linear-gradient(45deg, #E74C3C, #C0392B);
+            color: white;
+        }
+
+        .interactive-element {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-element:hover {
+            transform: scale(1.02);
+        }
+
+        .portfolio-preview {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 15px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .portfolio-preview h4 {
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        @media (max-width: 768px) {
+            .path-step {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .step-features {
+                justify-content: center;
+            }
+            
+            .accessibility-features {
+                grid-template-columns: 1fr;
+            }
+            
+            .interactive-workspace {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Accessible Learning Path</h1>
+            <p>Grace's Inclusive Design Journey</p>
+            <div class="accessibility-badge">♿ Accessibility-First Platform</div>
+        </div>
+
+        <div class="path-container">
+            <!-- Step 1: Login -->
+            <div class="path-step interactive-element" onclick="highlightStep(this)">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-title">Platform Login</div>
+                    <div class="step-description">
+                        Grace logs into the platform with full accessibility support and personalized interface options.
+                    </div>
+                    <div class="step-features">
+                        <div class="feature-tag accessibility-tag">Screen Reader Compatible</div>
+                        <div class="feature-tag accessibility-tag">Keyboard Navigation</div>
+                        <div class="feature-tag accessibility-tag">High Contrast Mode</div>
+                    </div>
+                </div>
+                <div class="visual-element">🔐</div>
+            </div>
+
+            <div class="connecting-line"></div>
+
+            <!-- Step 2: Module Selection -->
+            <div class="path-step module-selection interactive-element" onclick="highlightStep(this)">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-title">Career Path Selection</div>
+                    <div class="step-description">
+                        Selects "Graphic Design Career Path" module with clear visual hierarchy and accessible navigation.
+                    </div>
+                    <div class="step-features">
+                        <div class="feature-tag">Career Focus</div>
+                        <div class="feature-tag">Clear Navigation</div>
+                        <div class="feature-tag">Visual Hierarchy</div>
+                    </div>
+                </div>
+                <div class="visual-element">🎨</div>
+            </div>
+
+            <div class="connecting-line"></div>
+
+            <!-- Step 3: Learning Experience -->
+            <div class="path-step learning-experience interactive-element" onclick="highlightStep(this)">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <div class="step-title">Visual-First Learning Experience</div>
+                    <div class="step-description">
+                        Engages with lessons structured as visual-first tutorials with comprehensive accessibility features and interactive workspace integration.
+                    </div>
+                    <div class="step-features">
+                        <div class="feature-tag">Visual-First Design</div>
+                        <div class="feature-tag">Interactive Workspace</div>
+                        <div class="feature-tag">Real-World Briefs</div>
+                    </div>
+                    <div class="accessibility-features">
+                        <div class="accessibility-card">
+                            <h4>📹 Subtitled Videos</h4>
+                            <p>Full captions and transcripts</p>
+                        </div>
+                        <div class="accessibility-card">
+                            <h4>📝 On-Screen Annotations</h4>
+                            <p>Step-by-step visual guides</p>
+                        </div>
+                        <div class="accessibility-card">
+                            <h4>🤟 Sign Language</h4>
+                            <p>Optional interpretation overlay</p>
+                        </div>
+                    </div>
+                    <div class="interactive-workspace">
+                        <div class="workspace-feature">
+                            <h4>🎯 Task Integration</h4>
+                            <p>Complete tasks as tutorials progress</p>
+                        </div>
+                        <div class="workspace-feature">
+                            <h4>🔄 Practice Mode</h4>
+                            <p>Replicate real-world design briefs</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="visual-element">🖥️</div>
+            </div>
+
+            <div class="connecting-line"></div>
+
+            <!-- Step 4: System Response -->
+            <div class="path-step system-response interactive-element" onclick="highlightStep(this)">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <div class="step-title">Adaptive System Response</div>
+                    <div class="step-description">
+                        System tracks Grace's activity, adapts to her pace, awards skill-based badges, enables personal bookmarking, and provides comprehensive progress tracking.
+                    </div>
+                    <div class="step-features">
+                        <div class="feature-tag">Pace Adaptation</div>
+                        <div class="feature-tag">Progress Tracking</div>
+                        <div class="feature-tag">Personal Bookmarks</div>
+                        <div class="feature-tag">Email Reports</div>
+                    </div>
+                    <div class="badge-showcase">
+                        <div class="skill-badge">Pen Tool Expert</div>
+                        <div class="skill-badge">Color Theory Master</div>
+                        <div class="skill-badge">Typography Pro</div>
+                        <div class="skill-badge">Layout Specialist</div>
+                    </div>
+                    <div class="portfolio-preview">
+                        <h4>📁 Mini-Portfolio Project</h4>
+                        <p>Showcase your growing skills with a personalized portfolio piece</p>
+                    </div>
+                </div>
+                <div class="visual-element">📊</div>
+            </div>
+
+            <div class="connecting-line"></div>
+
+            <!-- Step 5: Emotional Outcome -->
+            <div class="path-step emotional-outcome interactive-element" onclick="highlightStep(this)">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <div class="step-title">Empowerment & Growth</div>
+                    <div class="step-description">
+                        Grace feels empowered, seen, and motivated. She appreciates that the platform adapts to her learning style rather than asking her to adapt to it. Her confidence grows as her skills develop.
+                    </div>
+                    <div class="step-features">
+                        <div class="feature-tag">Empowerment</div>
+                        <div class="feature-tag">Inclusive Design</div>
+                        <div class="feature-tag">Skill Growth</div>
+                        <div class="feature-tag">Confidence Building</div>
+                    </div>
+                    <div class="empowerment-indicators">
+                        <div class="empowerment-icon empowerment-seen">👁️</div>
+                        <span>Feels seen and valued</span>
+                        <div class="empowerment-icon empowerment-motivated">🚀</div>
+                        <span>Highly motivated</span>
+                        <div class="empowerment-icon empowerment-confident">💪</div>
+                        <span>Growing confidence</span>
+                    </div>
+                </div>
+                <div class="visual-element">🌟</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function highlightStep(element) {
+            // Remove previous highlights
+            document.querySelectorAll('.path-step').forEach(step => {
+                step.style.borderLeft = step.classList.contains('module-selection') ? '6px solid #FF9800' : 
+                                       step.classList.contains('learning-experience') ? '6px solid #4CAF50' :
+                                       step.classList.contains('system-response') ? '6px solid #2196F3' : 
+                                       step.classList.contains('emotional-outcome') ? '6px solid #E91E63' : 
+                                       '6px solid #9B59B6';
+                step.style.transform = '';
+                step.style.boxShadow = '';
+            });
+
+            // Highlight clicked step
+            element.style.borderLeft = '6px solid #FF9800';
+            element.style.transform = 'translateX(10px)';
+            element.style.boxShadow = '0 15px 40px rgba(255, 152, 0, 0.3)';
+
+            // Add pulse animation to the step number
+            const stepNumber = element.querySelector('.step-number');
+            stepNumber.style.animation = 'pulse 0.6s ease-in-out';
+            
+            setTimeout(() => {
+                stepNumber.style.animation = '';
+            }, 600);
+        }
+
+        // Add pulse animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.1); }
+                100% { transform: scale(1); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Add interactive hover effects
+        document.querySelectorAll('.accessibility-card, .workspace-feature').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px) scale(1.05)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(-3px)';
+            });
+        });
+
+        // Add sparkle animation to badges
+        document.querySelectorAll('.skill-badge').forEach(badge => {
+            badge.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05) rotate(2deg)';
+            });
+            badge.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+            });
+        });
+    </script>
+</body>
+</html>

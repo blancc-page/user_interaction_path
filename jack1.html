@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Interaction Path II - Re-engagement Journey</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        .path-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            position: relative;
+        }
+
+        .path-step {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 6px solid #FF6B6B;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .path-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-number {
+            background: linear-gradient(45deg, #FF6B6B, #E55A4F);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.5em;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-number::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .step-number:hover::before {
+            left: 100%;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-size: 1.4em;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .step-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .step-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .feature-tag {
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .goal-step {
+            background: #fff3e0;
+            border-left-color: #FF9800;
+        }
+
+        .goal-step .step-number {
+            background: linear-gradient(45deg, #FF9800, #F57C00);
+        }
+
+        .interaction-step {
+            background: #e8f5e8;
+            border-left-color: #4CAF50;
+        }
+
+        .interaction-step .step-number {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+        }
+
+        .system-response {
+            background: #e3f2fd;
+            border-left-color: #2196F3;
+        }
+
+        .system-response .step-number {
+            background: linear-gradient(45deg, #2196F3, #1976D2);
+        }
+
+        .emotional-outcome {
+            background: #f3e5f5;
+            border-left-color: #E91E63;
+        }
+
+        .emotional-outcome .step-number {
+            background: linear-gradient(45deg, #E91E63, #C2185B);
+        }
+
+        .visual-element {
+            width: 80px;
+            height: 80px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .visual-element:hover {
+            transform: rotate(5deg) scale(1.1);
+        }
+
+        .visual-element::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .visual-element:hover::before {
+            transform: translateX(100%);
+        }
+
+        .connecting-line {
+            width: 4px;
+            height: 40px;
+            background: linear-gradient(to bottom, #FF6B6B, #4ECDC4);
+            margin: 0 auto;
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .connecting-line::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 12px;
+            background: white;
+            border: 3px solid #FF6B6B;
+            border-radius: 50%;
+        }
+
+        .motivation-meter {
+            width: 100%;
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 15px;
+            position: relative;
+        }
+
+        .motivation-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FF6B6B, #4ECDC4);
+            border-radius: 10px;
+            transition: width 2s ease-in-out;
+        }
+
+        .motivation-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            font-size: 0.9em;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .simulation-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .simulation-card {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .simulation-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .simulation-card h4 {
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .simulation-card p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .interactive-element {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-element:hover {
+            transform: scale(1.02);
+        }
+
+        .emotion-indicators {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            align-items: center;
+        }
+
+        .emotion-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+
+        .emotion-icon:hover {
+            transform: scale(1.2);
+        }
+
+        .emotion-confused {
+            background: #ffcdd2;
+            color: #d32f2f;
+        }
+
+        .emotion-inspired {
+            background: #c8e6c9;
+            color: #388e3c;
+        }
+
+        .emotion-motivated {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        @media (max-width: 768px) {
+            .path-step {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .step-features {
+                justify-content: center;
+            }
+            
+            .simulation-showcase {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>User Interaction Path II</h1>
+            <p>Motivation Drop & Re-engagement Journey</p>
+        </div>
+
+        <div class="path-container">
+            <!-- Step 1: Context & Motivation -->
+            <div class="path-step interactive-element" onclick="highlightStep(this)">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-title">Context & Motivation Drop</div>
+                    <div class="step-description">
+                        Jack starts the Calculus I module but finds himself losing interest by Day 3. He's beginning to feel that the subject lacks personal meaning.
+                    </div>
+                    <div class="step-features">
+                        <div class="feature-tag">Day 3 Struggle</div>
+                        <div class="feature-tag">Lack of Meaning</div>
+                        <div class="feature-tag">Interest Decline</div>
+                    </div>
+                    <div class="emotion-indicators">
+                        <div class="emotion-icon emotion-confused">😕</div>
+                        <span>Feeling disconnected from the material</span>
+                    </div>
+                    <div class="motivation-meter">
+                        <div class="motivation-fill" style="width: 25%"></div>
+                        <div class="motivation-label">Low Motivation</div>
+                    </div>
+                </div>
+                <div class="visual-element">📉</div>
+            </div>
+
+            <div class="connecting-line"></div>
+
+            <!-- Step 2: Goal -->
+            <div class="path-step goal-step interactive-element" onclick="highlightStep(this)">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-title">Goal</div>
+                    <div class="step-description">
+                        Reignite his motivation by connecting study to real-world relevance
+                    </div>
+                    <div class="step-features">
+                        <div class="feature-tag">Real-world Connection</div>
+                        <div class="feature-tag">Relevance</div>
+                        <div class="feature-tag">Re-engagement</div>
+                    </div>
+                </div>
+                <div class="visual-element">🎯</div>
+            </div>
+
+            <div class="connecting-line"></div>
+
+            <!-- Step 3: Interaction Path II -->
+            <div class="path-step interaction-step interactive-element" onclick="highlightStep(this)">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <div class="step-title">Re-engagement Through Career Explorer</div>
+                    <div class="step-description">
+                        While browsing app features, Jack clicks "Career Explorer: Architect" and launches an immersive simulation experience.
+                    </div>
+                    <div class="step-features">
+                        <div class="feature-tag">Career Explorer</div>
+                        <div class="feature-tag">Immersive Simulation</div>
+                        <div class="feature-tag">Applied Learning</div>
+                    </div>
+                    <div class="simulation-showcase">
+                        <div class="simulation-card">
+                            <h4>🏗️ A Day in the Life</h4>
+                            <p>Experience architect workflow</p>
+                        </div>
+                        <div class="simulation-card">
+                            <h4>📐 Virtual Design Task</h4>
+                            <p>Layout sketching using math</p>
+                        </div>
+                        <div class="simulation-card">
+                            <h4>👥 Team Meetings</h4>
+                            <p>Applied calculus in practice</p>
+                        </div>
+                        <div class="simulation-card">
+                            <h4>🎨 Design Outcomes</h4>
+                            <p>Math supporting creativity</p>
+                        </div>
+                    </div>
+                    <div class="motivation-meter">
+                        <div class="motivation-fill" style="width: 70%"></div>
+                        <div class="motivation-label">Rising Interest</div>
+                    </div>
+                </div>
+                <div class="visual-element">🏛️</div>
+            </div>
+
+            <div class="connecting-line"></div>
+
+            <!-- Step 4: System Response -->
+            <div class="path-step system-response interactive-element" onclick="highlightStep(this)">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <div class="step-title">System Response</div>
+                    <div class="step-description">
+                        Highlights the connection between Calculus topics and architecture, suggests related lessons with direct application examples, and logs new engagement patterns.
+                    </div>
+                    <div class="step-features">
+                        <div class="feature-tag">Topic Connections</div>
+                        <div class="feature-tag">Applied Examples</div>
+                        <div class="feature-tag">Engagement Tracking</div>
+                        <div class="feature-tag">Personalized Suggestions</div>
+                    </div>
+                </div>
+                <div class="visual-element">🔗</div>
+            </div>
+
+            <div class="connecting-line"></div>
+
+            <!-- Step 5: Emotional Outcome -->
+            <div class="path-step emotional-outcome interactive-element" onclick="highlightStep(this)">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <div class="step-title">Emotional Outcome</div>
+                    <div class="step-description">
+                        Jack feels inspired by the career connection. His interest in Calculus is renewed, as he now sees its purpose. This boosts his intrinsic motivation to continue learning.
+                    </div>
+                    <div class="step-features">
+                        <div class="feature-tag">Inspiration</div>
+                        <div class="feature-tag">Renewed Interest</div>
+                        <div class="feature-tag">Purpose Clarity</div>
+                        <div class="feature-tag">Intrinsic Motivation</div>
+                    </div>
+                    <div class="emotion-indicators">
+                        <div class="emotion-icon emotion-inspired">😊</div>
+                        <div class="emotion-icon emotion-motivated">💪</div>
+                        <span>Feeling inspired and motivated</span>
+                    </div>
+                    <div class="motivation-meter">
+                        <div class="motivation-fill" style="width: 95%"></div>
+                        <div class="motivation-label">High Motivation</div>
+                    </div>
+                </div>
+                <div class="visual-element">🚀</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function highlightStep(element) {
+            // Remove previous highlights
+            document.querySelectorAll('.path-step').forEach(step => {
+                step.style.borderLeft = step.classList.contains('goal-step') ? '6px solid #FF9800' : 
+                                       step.classList.contains('interaction-step') ? '6px solid #4CAF50' :
+                                       step.classList.contains('system-response') ? '6px solid #2196F3' : 
+                                       step.classList.contains('emotional-outcome') ? '6px solid #E91E63' : 
+                                       '6px solid #FF6B6B';
+                step.style.transform = '';
+                step.style.boxShadow = '';
+            });
+
+            // Highlight clicked step
+            element.style.borderLeft = '6px solid #FF9800';
+            element.style.transform = 'translateX(10px)';
+            element.style.boxShadow = '0 15px 40px rgba(255, 152, 0, 0.3)';
+
+            // Add pulse animation to the step number
+            const stepNumber = element.querySelector('.step-number');
+            stepNumber.style.animation = 'pulse 0.6s ease-in-out';
+            
+            setTimeout(() => {
+                stepNumber.style.animation = '';
+            }, 600);
+        }
+
+        // Add pulse animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.1); }
+                100% { transform: scale(1); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Add interactive hover effects for simulation cards
+        document.querySelectorAll('.simulation-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px) scale(1.05)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+        });
+
+        // Animate motivation meters on load
+        window.addEventListener('load', function() {
+            const motivationFills = document.querySelectorAll('.motivation-fill');
+            motivationFills.forEach(fill => {
+                const targetWidth = fill.style.width;
+                fill.style.width = '0%';
+                setTimeout(() => {
+                    fill.style.width = targetWidth;
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html>

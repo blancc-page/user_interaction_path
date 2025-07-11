@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faith's Music Theory Learning - Audio & Haptic Feedback</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, #9B59B6, #E74C3C, #F39C12, #27AE60, #3498DB);
+            animation: musicWave 4s infinite;
+        }
+
+        @keyframes musicWave {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(20px); }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #9B59B6, #E74C3C);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+        }
+
+        .header h1::after {
+            content: '♪';
+            position: absolute;
+            right: -40px;
+            top: 0;
+            color: #F39C12;
+            animation: noteFloat 3s infinite;
+        }
+
+        @keyframes noteFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        .session-info {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .info-badge {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .accessibility-badge {
+            background: linear-gradient(45deg, #27AE60, #2ECC71);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .learning-panel {
+            background: linear-gradient(135deg, #9B59B6 0%, #8E44AD 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(155, 89, 182, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .learning-panel::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: shimmer 6s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .feedback-panel {
+            background: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(231, 76, 60, 0.3);
+            position: relative;
+        }
+
+        .panel-title {
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .panel-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            backdrop-filter: blur(10px);
+        }
+
+        .lesson-content {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(10px);
+        }
+
+        .lesson-title {
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            color: #FFE066;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .lesson-description {
+            font-size: 1.1em;
+            line-height: 1.6;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .progress-indicator {
+            background: rgba(255, 255, 255, 0.2);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #FFE066, #F39C12);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: progressShine 2s infinite;
+        }
+
+        @keyframes progressShine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .virtual-keyboard {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .keyboard-title {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            color: #FFE066;
+            text-align: center;
+        }
+
+        .piano-keys {
+            display: flex;
+            justify-content: center;
+            gap: 2px;
+            margin-bottom: 15px;
+        }
+
+        .piano-key {
+            width: 35px;
+            height: 120px;
+            background: white;
+            border: 2px solid #333;
+            border-radius: 0 0 8px 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 10px;
+            font-size: 0.8em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .piano-key.black {
+            background: #333;
+            color: white;
+            height: 80px;
+            width: 25px;
+            margin: 0 -12px;
+            z-index: 2;
+        }
+
+        .piano-key:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .piano-key.active {
+            background: #FFE066;
+            color: #333;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255, 224, 102, 0.5);
+        }
+
+        .piano-key.black.active {
+            background: #F39C12;
+        }
+
+        .scale-display {
+            text-align: center;
+            font-size: 1.1em;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .feedback-modes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .feedback-mode {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .feedback-mode:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .feedback-mode.active {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.05);
+        }
+
+        .feedback-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .feedback-label {
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .haptic-simulator {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .haptic-title {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            color: #FFE066;
+        }
+
+        .haptic-patterns {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .haptic-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .haptic-dot.active {
+            background: #FFE066;
+            transform: scale(1.3);
+            box-shadow: 0 0 15px rgba(255, 224, 102, 0.5);
+        }
+
+        .audio-visualizer {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .visualizer-title {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            color: #FFE066;
+            text-align: center;
+        }
+
+        .visualizer-bars {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 3px;
+            height: 60px;
+        }
+
+        .visualizer-bar {
+            width: 8px;
+            background: linear-gradient(to top, #E74C3C, #FFE066);
+            border-radius: 4px 4px 0 0;
+            transition: height 0.3s ease;
+        }
+
+        .accessibility-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #3498DB 0%, #2980B9 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(52, 152, 219, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .feature-description {
+            font-size: 0.9em;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .learning-controls {
+            background: linear-gradient(135deg, #27AE60 0%, #2ECC71 100%);
+            padding: 30px;
+            border-radius: 20px;
+            color: white;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(39, 174, 96, 0.3);
+        }
+
+        .controls-title {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .control-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: white;
+            color: #27AE60;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .control-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .control-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .learning-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            border-left: 5px solid #9B59B6;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #9B59B6;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-weight: 600;
+        }
+
+        .faith-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #FF6B6B, #FFE066);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            margin: 0 auto 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .faith-avatar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: avatarShine 4s infinite;
+        }
+
+        @keyframes avatarShine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .immersive-feedback {
+            background: linear-gradient(135deg, #F39C12 0%, #E67E22 100%);
+            padding: 30px;
+            border-radius: 20px;
+            color: white;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(243, 156, 18, 0.3);
+        }
+
+        .immersive-title {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+
+        .immersive-description {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .sensory-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .sensory-indicator {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            min-width: 120px;
+            transition: all 0.3s ease;
+        }
+
+        .sensory-indicator:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .sensory-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .sensory-label {
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .session-info {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .accessibility-features {
+                grid-template-columns: 1fr;
+            }
+            
+            .piano-keys {
+                flex-wrap: wrap;
+            }
+            
+            .control-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Faith's Music Theory Journey</h1>
+            <p>Learning with Audio & Haptic Feedback</p>
+            <div class="session-info">
+                <div class="info-badge">
+                    🕐 2:00 PM - Home Session
+                </div>
+                <div class="info-badge">
+                    🎵 Major Scales Lesson
+                </div>
+                <div class="info-badge accessibility-badge">
+                    ♿ Accessibility-First Learning
+                </div>
+            </div>
+        </div>
+
+        <div class="main-layout">
+            <div class="learning-panel">
+                <div class="panel-title">
+                    <div class="panel-icon">🎹</div>
+                    Interactive Music Learning
+                </div>
+                
+                <div class="lesson-content">
+                    <div class="lesson-title">
+                        🎼 C Major Scale
+                        <span style="font-size: 0.7em; opacity: 0.8;">Continuation from Yesterday</span>
+                    </div>
+                    <div class="lesson-description">
+                        Today we'll explore the C Major scale using multi-sensory feedback. Feel the rhythm through haptic patterns while hearing each note's unique frequency and position.
+                    </div>
+                    <div class="progress-indicator">
+                        <div class="progress-bar" id="lessonProgress" style="width: 65%;"></div>
+                    </div>
+                    <div style="font-size: 0.9em; opacity: 0.8; text-align: center;">
+                        Lesson Progress: 65% Complete
+                    </div>
+                </div>
+
+                <div class="virtual-keyboard">
+                    <div class="keyboard-title">Virtual Piano - Audio & Haptic Enabled</div>
+                    <div class="piano-keys">
+                        <div class="piano-key" data-note="C" onclick="playNote('C')">C</div>
+                        <div class="piano-key black" data-note="C#" onclick="playNote('C#')">C#</div>
+                        <div class="piano-key" data-note="D" onclick="playNote('D')">D</div>
+                        <div class="piano-key black" data-note="D#" onclick="playNote('D#')">D#</div>
+                        <div class="piano-key" data-note="E" onclick="playNote('E')">E</div>
+                        <div class="piano-key" data-note="F" onclick="playNote('F')">F</div>
+                        <div class="piano-key black" data-note="F#" onclick="playNote('F#')">F#</div>
+                        <div class="piano-key" data-note="G" onclick="playNote('G')">G</div>
+                        <div class="piano-key black" data-note="G#" onclick="playNote('G#')">G#</div>
+                        <div class="piano-key" data-note="A" onclick="playNote('A')">A</div>
+                        <div class="piano-key black" data-note="A#" onclick="playNote('A#')">A#</div>
+                        <div class="piano-key" data-note="B" onclick="playNote('B')">B</div>
+                    </div>
+                    <div class="scale-display" id="scaleDisplay">
+                        Press keys to hear and feel the C Major scale: C - D - E - F - G - A - B - C
+                    </div>
+                </div>
+
+                <div class="faith-avatar">👩‍🎓</div>
+            </div>
+
+            <div class="feedback-panel">
+                <div class="panel-title">
+                    <div class="panel-icon">🎛️</div>
+                    Assistive Feedback Systems
+                </div>
+                
+                <div class="feedback-modes">
+                    <div class="feedback-mode active" onclick="toggleFeedback('audio')">
+                        <span class="feedback-icon">🔊</span>
+                        <div class="feedback-label">Audio</div>
+                    </div>
+                    <div class="feedback-mode active" onclick="toggleFeedback('haptic')">
+                        <span class="feedback-icon">📳</span>
+                        <div class="feedback-label">Haptic</div>
+                    </div>
+                    <div class="feedback-mode" onclick="toggleFeedback('visual')">
+                        <span class="feedback-icon">👁️</span>
+                        <div class="feedback-label">Visual</div>
+                    </div>
+                    <div class="feedback-mode active" onclick="toggleFeedback('voice')">
+                        <span class="feedback-icon">🗣️</span>
+                        <div class="feedback-label">Voice</div>
+                    </div>
+                </div>
+
+                <div class="haptic-simulator">
+                    <div class="haptic-title">Haptic Pattern Feedback</div>
+                    <div class="haptic-patterns">
+                        <div class="haptic-dot" id="haptic1"></div>
+                        <div class="haptic-dot" id="haptic2"></div>
+                        <div class="haptic-dot" id="haptic3"></div>
+                        <div class="haptic-dot" id="haptic4"></div>
+                        <div class="haptic-dot" id="haptic5"></div>
+                        <div class="haptic-dot" id="haptic6"></div>
+                        <div class="haptic-dot" id="haptic7"></div>
+                        <div class="haptic-dot" id="haptic8"></div>
+                    </div>
+                    <div style="font-size: 0.9em; opacity: 0.9; text-align: center;">
+                        Each note creates a unique vibration pattern on your device
+                    </div>
+                </div>
+
+                <div class="audio-visualizer">
+                    <div class="visualizer-title">Audio Frequency Visualizer</div>
+                    <div class="visualizer-bars">
+                        <div class="visualizer-bar" style="height: 20px;"></div>
+                        <div class="visualizer-bar" style="height: 35px;"></div>
+                        <div class="visualizer-bar" style="height: 45px;"></div>
+                        <div class="visualizer-bar" style="height: 30px;"></div>
+                        <div class="visualizer-bar" style="height: 50px;"></div>
+                        <div class="visualizer-bar" style="height: 25px;"></div>
+                        <div class="visualizer-bar" style="height: 40px;"></div>
+                        <div class="visualizer-bar" style="height: 35px;"></div>
+                        <div class="visualizer-bar" style="height: 45px;"></div>
+                        <div class="visualizer-bar" style="height: 30px;"></div>
+                    </div>
+                    <div style="font-size: 0.9em; opacity: 0.9; text-align: center; margin-top: 10px;">
+                        Visual representation of audio frequencies for enhanced learning
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accessibility-features">
+            <div class="feature-card">
+                <span class="feature-icon">🎧</span>
+                <div class="feature-title">Spatial Audio</div>
+                <div class="feature-description">
+                    3D audio positioning helps Faith understand musical relationships through spatial sound placement and directional audio cues.
+                </div>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">📱</span>
+                <div class="feature-title">Smart Device Integration</div>
+                <div class="feature-description">
+                    Seamless connection between Faith's phone and laptop, with synchronized haptic feedback and audio responses.
+                </div>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🤖</span>
+                <div class="feature-title">AI Voice Assistant</div>
+                <div class="feature-description">
+                    Intelligent voice guidance that adapts to Faith's learning pace and provides contextual explanations of music theory concepts.
+                </div>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">⚡</span>
+                <div class="feature-title">Adaptive Interface</div>
+                <div class="feature-description">
+                    Interface automatically adjusts based on Faith's preferences and learning patterns, optimizing for her visual needs.
+                </div>
+            </div>
+        </div>
+
+        <div class="learning-controls">
+            <div class="controls-title">🎮 Learning Controls</div>
+            <div class="control-buttons">
+                <button class="control-btn" onclick="playScale()">
+                    ▶️ Play C Major Scale
+                </button>
+                <button class="control-btn" onclick="practiceMode()">
+                    🎯 Practice Mode
+                </button>
+                <button class="control-btn" onclick="reviewYesterday()">
+                    📚 Review Yesterday's Lesson
+                </button>
+                <button class="control-btn" onclick="nextLesson()">
+                    ➡️ Next: Minor Scales
+                </button>
+            </div>
+        </div>
+
+        <div class="learning-stats">
+            <div class="stat-card">
+                <div class="stat-number">12</div>
+                <div class="stat-label">Lessons Completed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">89%</div>
+                <div class="stat-label">Theory Accuracy</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">45</div>
+                <div class="stat-label">Minutes Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">7</div>
+                <div class="stat-label">Scales Mastered</div>
+            </div>
+        </div>
+
+        <div class="immersive-feedback">
+            <div class="immersive-title">🌟 Multi-Sensory Learning Experience</div>
+            <div class="immersive-description">
+                Faith's learning experience combines multiple sensory channels to create a rich, accessible music education environment that adapts to her visual impairment.
+            </div>
+            <div class="sensory-indicators">
+                <div class="sensory-indicator">
+                    <span class="sensory-icon">👂</span>
+                    <div class="sensory-label">Enhanced Audio</div>
+                </div>
+                <div class="sensory-indicator">
+                    <span class="sensory-icon">✋</span>
+                    <div class="sensory-label">Haptic Feedback</div>
+                </div>
+                <div class="sensory-indicator">
+                    <span class="sensory-icon">🎵</span>
+                    <div class="sensory-label">Musical Patterns</div>
+                </div>
+                <div class="sensory-indicator">
+                    <span class="sensory-icon">🧠</span>
+                    <div class="sensory-label">Cognitive Mapping</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentScale = ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'C'];
+        let currentNoteIndex = 0;
+        let activeFeedback = {
+            audio: true,
+            
